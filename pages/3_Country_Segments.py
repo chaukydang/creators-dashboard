@@ -1,0 +1,44 @@
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from utils import load_data
+
+st.title("Country & Segments")
+df = load_data()
+
+if "country" not in df.columns or df["country"].isna().all():
+    st.warning("No `country` column available in the dataset.")
+else:
+    agg = df.groupby("country", dropna=False)["kol_score"].mean().reset_index().sort_values("kol_score", ascending=False)
+    st.subheader("Top Countries by Mean KOL Score")
+    fig, ax = plt.subplots(figsize=(8, 6))
+    top = agg.head(20)
+    ax.barh(top["country"].astype(str), top["kol_score"]); ax.invert_yaxis()
+    ax.set_xlabel("Mean KOL Score (0-1)")
+    st.pyplot(fig)
+
+    st.subheader("Boxplot: Engagement per View by Country (Top 10 by count)")
+    top_countries = df["country"].value_counts().head(10).index.tolist()
+    box_df = df[df["country"].isin(top_countries)]
+    fig2, ax2 = plt.subplots(figsize=(10, 6))
+    data = [box_df.loc[box_df["country"] == c, "engagement_per_view"].dropna() for c in top_countries]
+    ax2.boxplot(data, labels=[str(c) for c in top_countries], vert=True, showfliers=False)
+    ax2.set_ylabel("Engagement per View")
+    st.pyplot(fig2)
+
+st.subheader("Tier mix in a country")
+selected_country = None
+if "country" in df.columns:
+    opts = sorted([c for c in df["country"].dropna().unique()])
+    selected_country = st.selectbox("Country", opts) if opts else None
+
+if selected_country:
+    d = df[df["country"] == selected_country]
+    mix = d["follower_tier"].value_counts().sort_index()
+    fig3, ax3 = plt.subplots()
+    mix.plot(kind="bar", ax=ax3)
+    ax3.set_title(f"Follower tier mix — {selected_country}")
+    ax3.set_ylabel("Count")
+    st.pyplot(fig3)
