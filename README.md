@@ -1,91 +1,93 @@
-Đây là một file **README.md** chuẩn để bạn đưa vào repo và deploy lên Streamlit Cloud. Nó giải thích rõ ràng từ setup local → deploy.
-
----
-
-```markdown
 # 📊 KOL Performance Tracking Dashboard
 
 Dashboard đa trang (multi-page) xây dựng bằng **Streamlit** để phân tích & theo dõi hiệu suất KOL/TikTok Creators.
 
-## 🚀 Tính năng chính
-- **Overview:** KPI, phân phối EPV/EP1k, Pareto reach.
-- **Leaderboard:** Top KOL theo KOL Score / EPV / EP1k.
-- **Country & Segments:** Benchmark theo quốc gia, follower tier.
-- **Anomalies:** Phát hiện bất thường (like/view, comment/view, share/view).
-- **Export:** Tải dataset đã clean về CSV.
-- **Insights:** Lorenz/Gini, decile table, shortlists (Performance-first & Awareness-first), narrative auto-generated.
+## 🚀 Tính năng
+- **Overview:** KPI, phân phối EPV/EP1k, **Pareto reach** (tập trung reach).
+- **Leaderboard:** Lọc/tìm kiếm, xếp hạng theo **KOL Score / EPV / EP1k**.
+- **Country & Segments:** Benchmark theo **quốc gia** và **follower tier**.
+- **Anomalies:** Phát hiện bất thường **like/view, comment/view, share/view**.
+- **Export:** Tải dữ liệu đã clean (CSV).
+- **Insights:** **Lorenz/Gini**, **decile table**, **shortlists** (Performance-first & Awareness-first), **narrative** auto.
+
+---
 
 ## 📂 Cấu trúc thư mục
+
+```text
+app/
+├─ App.py                 # Entry point Streamlit
+├─ utils.py               # Hàm nạp data & helper
+├─ requirements.txt       # Danh sách thư viện
+└─ pages/                 # Các trang con
+   ├─ 1_Overview.py
+   ├─ 2_Leaderboard.py
+   ├─ 3_Country_Segments.py
+   ├─ 4_Anomalies.py
+   ├─ 5_Export.py
+   └─ 6_Insights.py
+scripts/
+└─ kol_cleaner.py         # Script làm sạch dữ liệu raw → clean
+out/
+└─ kol_clean.csv          # Dữ liệu clean (có thể commit để chạy ngay)
+data/
+└─ tiktok_top_1000.csv    # Dữ liệu raw (không bắt buộc commit)
 ```
 
-app/
-├─ App.py                # Entry point Streamlit
-├─ utils.py              # Hàm nạp data & helper
-├─ requirements.txt      # Danh sách thư viện cần thiết
-└─ pages/                # Các trang con của dashboard
-├─ 1_Overview.py
-├─ 2_Leaderboard.py
-├─ 3_Country_Segments.py
-├─ 4_Anomalies.py
-├─ 5_Export.py
-└─ 6_Insights.py
-out/
-└─ kol_clean.csv         # Dữ liệu clean (output từ script hoặc tải sẵn)
-scripts/
-└─ kol_cleaner.py        # Script làm sạch dữ liệu raw → clean
-data/
-└─ tiktok_top_1000.csv   # Dữ liệu raw (có thể bỏ qua khi deploy)
+> Bạn có thể **commit `out/kol_clean.csv`** để app chạy ngay, hoặc dùng **uploader** trong app để upload CSV khi chạy lần đầu.
 
-````
+---
 
-## ⚙️ Cài đặt local
-Yêu cầu: Python 3.9+  
-Khuyên dùng virtualenv:
+## ⚙️ Cài đặt & chạy local
+
+Yêu cầu: **Python 3.9+**. Khuyến nghị virtualenv.
 
 ```bash
 git clone https://github.com/<your-username>/creators-dashboard.git
 cd creators-dashboard/app
 
-# tạo venv
+# tạo & kích hoạt venv
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
 
-# cài gói
+# cài thư viện
 pip install -r requirements.txt
-````
 
-Chạy local:
-
-```bash
+# chạy app
 streamlit run App.py
 ```
 
-Mở trình duyệt tại [http://localhost:8501](http://localhost:8501)
+Mở trình duyệt: http://localhost:8501
+
+---
 
 ## 🧹 Làm sạch dữ liệu (tùy chọn)
 
-Nếu có raw CSV (`data/tiktok_top_1000.csv`), chạy:
+Nếu bạn có file raw `data/tiktok_top_1000.csv`, tạo file clean:
 
 ```bash
 cd scripts
 python kol_cleaner.py
 ```
 
-File clean sẽ tạo ở `out/kol_clean.csv`.
+File clean sẽ được tạo ở `out/kol_clean.csv`.
+
+---
 
 ## ☁️ Deploy lên Streamlit Cloud
 
-1. Push repo lên GitHub (đảm bảo trong repo có `app/` và `requirements.txt`).
-2. Vào [https://share.streamlit.io](https://share.streamlit.io) → **New app**.
-3. Chọn repo: `<your-username>/creators-dashboard`.
-4. Branch: `main`.
-5. Main file path: `app/App.py`.
-6. Deploy 🎉
+1. Push repo lên GitHub (đảm bảo có `app/` và `app/requirements.txt`).  
+2. Truy cập https://share.streamlit.io → **New app**.  
+3. Chọn repo: `<your-username>/creators-dashboard`.  
+4. Branch: `main`.  
+5. **Main file path**: `app/App.py`.  
+6. Bấm **Deploy** 🎉
 
-👉 Lưu ý:
+**Lưu ý:**
+- Nếu **commit `out/kol_clean.csv`**, app chạy ngay.
+- Nếu **không commit CSV**, lần đầu mở app sẽ có **file uploader** → upload `kol_clean.csv` rồi ấn **Rerun**.
 
-* Nếu bạn commit `out/kol_clean.csv`, app sẽ chạy ngay.
-* Nếu không commit CSV, app sẽ hiển thị uploader → bạn upload file `kol_clean.csv` khi chạy lần đầu.
+---
 
 ## 📦 Requirements
 
@@ -96,15 +98,45 @@ numpy
 matplotlib
 ```
 
-## 📝 Ghi chú
-
-* Nếu file CSV > 50MB, cần Git LFS hoặc đặt file ở ngoài (Google Drive, S3, …) rồi sửa `utils.py` để đọc từ URL.
-* Các cảnh báo `DeprecationWarning` đã được xử lý (dùng `np.trapezoid`, `observed=False`, `tick_labels` trong boxplot).
-* Có thể mở rộng thêm: export PDF/PPTX, kết nối DB, Google Sheets API để dữ liệu cập nhật realtime.
-
-```
+> Nếu thêm thư viện mới, cập nhật file `app/requirements.txt` rồi `git push` để Cloud tự rebuild.
 
 ---
 
-Bạn muốn t viết thêm **README tiếng Việt đơn giản cho người không kỹ thuật** (kiểu hướng dẫn sếp mở app trên Streamlit Cloud), hay giữ bản dev-friendly như trên?
-```
+## 🧠 Gợi ý sử dụng
+
+- **Awareness campaign**: ưu tiên **Macro/Mega** (reach lớn), kèm guardrail `like/view` để tránh reach “rỗng”.  
+- **Performance campaign**: ưu tiên **Micro/Mid** có **EPV** & **EP1k** cao (xem trang **Insights** và **shortlists**).  
+- **Chống rủi ro**: kiểm tra mục **Anomalies** để loại KOL có tỷ lệ tương tác bất thường.
+
+---
+
+## 🛠️ Troubleshooting
+
+- **`FileNotFoundError: kol_clean.csv`**  
+  - Commit `out/kol_clean.csv` vào repo **hoặc** dùng uploader trong app để upload CSV khi chạy.
+
+- **Thiếu thư viện / `ModuleNotFoundError`**  
+  - Thêm tên gói vào `app/requirements.txt`, commit & push lại.
+
+- **CSV > 50MB**  
+  - Dùng **Git LFS** (`git lfs install && git lfs track "*.csv"`) **hoặc** lưu CSV ngoài (GDrive/S3/URL) và sửa `utils.py` để đọc từ URL.
+
+- **Cảnh báo Deprecation**  
+  - Repo này đã cập nhật: dùng `np.trapezoid`, `observed=False` trong `groupby`, `tick_labels` với `boxplot`.
+
+---
+
+## 🔒 Secrets (tuỳ chọn)
+
+Nếu cần đọc dữ liệu từ Google Sheets/DB, đặt thông tin trong **Secrets** của Streamlit Cloud (Manage app → Settings → Secrets). Trong code, truy cập bằng `st.secrets["KEY"]`.
+
+---
+
+## 📜 License
+
+Thêm `LICENSE` nếu bạn muốn chia sẻ public/open-source.
+
+---
+
+**Made with ❤️ & Streamlit.**  
+Mọi góp ý / PR hoan nghênh!
