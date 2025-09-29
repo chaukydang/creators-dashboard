@@ -4,7 +4,7 @@ import numpy as np
 import streamlit as st
 
 @st.cache_data
-def load_data(path: str = "/Users/dangchauky/Documents/dev/tiktok/KOL Performance Tracking Dashboard/data/kol_clean.csv") -> pd.DataFrame:
+def load_data(path: str = "kol_clean.csv") -> pd.DataFrame:
     df = pd.read_csv(path)
     for c in ["followers", "views_avg", "likes_avg", "comments_avg", "shares_avg",
               "engagement_per_view", "engagement_per_1k_followers", "kol_score"]:
