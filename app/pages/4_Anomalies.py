@@ -26,3 +26,34 @@ if {"followers","engagement_per_1k_followers","engagement_per_view"}.issubset(df
     sc = ax.scatter(d["followers"], d["engagement_per_1k_followers"],
                     s=(d["engagement_per_view"]*5000).clip(5,200), alpha=0.6)
     ax.set_xscale("log"); ax.set_xlabel("Followers (log)"); ax.set_ylabel("EP1k"); st.pyplot(fig)
+
+if {"followers","engagement_per_1k_followers","engagement_per_view"}.issubset(df.columns):
+    st.subheader("Followers vs EP1k (size = EPV) + Trendline")
+
+    d = df.dropna(subset=["followers","engagement_per_1k_followers","engagement_per_view"]).copy()
+    if len(d) > 2000:  # giảm n để nhanh + dễ nhìn
+        d = d.sample(2000, random_state=42)
+
+    fig, ax = plt.subplots()
+    ax.scatter(
+        d["followers"], d["engagement_per_1k_followers"],
+        s=(d["engagement_per_view"] * 5000).clip(5, 200),
+        alpha=0.6
+    )
+    ax.set_xscale("log")
+    ax.set_xlabel("Followers (log)")
+    ax.set_ylabel("EP1k")
+
+    # Đường xu hướng thô trên trục log(followers)
+    x = np.log10(d["followers"].values)
+    y = d["engagement_per_1k_followers"].values
+    if np.isfinite(x).sum() >= 2:
+        coef = np.polyfit(x, y, 1)              # y = a*log10(followers) + b
+        xx = np.linspace(x.min(), x.max(), 100)
+        yy = coef[0] * xx + coef[1]
+        ax.plot(10**xx, yy, linestyle="--")     # vẽ lại trên trục followers thực
+
+    st.pyplot(fig)
+    st.caption("Đường trend thường dốc xuống: follower càng lớn, EP1k càng giảm. Điểm nằm TRÊN đường → KOL ‘đáng tiền’.")
+else:
+    st.info("Thiếu cột cần thiết để vẽ scatter này.")

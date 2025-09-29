@@ -28,6 +28,24 @@ with c3: st.metric("Median EPV", kpi_fmt(dff["engagement_per_view"].median()))
 with c4: st.metric("Avg EP1k", kpi_fmt(dff["engagement_per_1k_followers"].mean()))
 with c5: st.metric("Avg KOL Score", kpi_fmt(dff["kol_score"].mean()))
 
+dff_sorted = dff.sort_values("followers", ascending=False)
+cum = dff_sorted["followers"].fillna(0).cumsum()
+total = dff_sorted["followers"].fillna(0).sum()
+
+if total > 0 and len(dff_sorted) > 0:
+    pct_creators = np.arange(1, len(dff_sorted) + 1) / len(dff_sorted) * 100
+    pct_reach = (cum / total) * 100
+
+    st.subheader("Pareto Reach (tập trung reach theo % KOL)")
+    fig, ax = plt.subplots()
+    ax.plot(pct_creators, pct_reach)
+    ax.set_xlabel("% KOL (xếp hạng theo followers)")
+    ax.set_ylabel("% Reach tích lũy")
+    ax.set_title("Pareto reach")
+    st.pyplot(fig)
+
+    st.caption("Nếu >70% reach nằm ở top 10–20% KOL → thị trường rất tập trung. Phối hợp Macro/Mega (awareness) + Micro/Mid (performance).")
+
 st.subheader("Distributions")
 colA,colB = st.columns(2)
 with colA:

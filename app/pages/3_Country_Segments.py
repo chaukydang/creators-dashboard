@@ -20,7 +20,7 @@ else:
     box_df = df[df["country"].isin(top_countries)]
     fig2, ax2 = plt.subplots(figsize=(10,6))
     data = [box_df.loc[box_df["country"]==c, "engagement_per_view"].dropna() for c in top_countries]
-    ax2.boxplot(data, labels=[str(c) for c in top_countries], showfliers=False)
+    ax2.boxplot(data, tick_labels=[str(c) for c in top_countries], showfliers=False)
     ax2.set_ylabel("Engagement per View"); st.pyplot(fig2)
 
 st.subheader("Tier mix in a country")
