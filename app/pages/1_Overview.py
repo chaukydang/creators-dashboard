@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from utils import kpi_fmt, load_data, number_fmt
+
+from app.utils import kpi_fmt, load_data, number_fmt
 
 st.title("Overview")
 df = load_data()

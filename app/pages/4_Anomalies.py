@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from utils import load_data
+
+from app.utils import load_data
 
 st.title("Anomalies & Quality Checks")
 df = load_data()
