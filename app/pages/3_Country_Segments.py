@@ -1,7 +1,6 @@
 # app/pages/3_Country_Segments.py
 import matplotlib.pyplot as plt
 import streamlit as st
-
 from utils import load_data
 
 st.title("Country & Segments")

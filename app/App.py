@@ -1,6 +1,5 @@
 # app/App.py
 import streamlit as st
-
 from utils import load_data
 
 st.set_page_config(page_title="KOL Performance Dashboard", page_icon="📊", layout="wide")
