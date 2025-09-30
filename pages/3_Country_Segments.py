@@ -1,8 +1,6 @@
-
-import streamlit as st
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import streamlit as st
+
 from utils import load_data
 
 st.title("Country & Segments")
@@ -11,11 +9,17 @@ df = load_data()
 if "country" not in df.columns or df["country"].isna().all():
     st.warning("No `country` column available in the dataset.")
 else:
-    agg = df.groupby("country", dropna=False)["kol_score"].mean().reset_index().sort_values("kol_score", ascending=False)
+    agg = (
+        df.groupby("country", dropna=False)["kol_score"]
+        .mean()
+        .reset_index()
+        .sort_values("kol_score", ascending=False)
+    )
     st.subheader("Top Countries by Mean KOL Score")
     fig, ax = plt.subplots(figsize=(8, 6))
     top = agg.head(20)
-    ax.barh(top["country"].astype(str), top["kol_score"]); ax.invert_yaxis()
+    ax.barh(top["country"].astype(str), top["kol_score"])
+    ax.invert_yaxis()
     ax.set_xlabel("Mean KOL Score (0-1)")
     st.pyplot(fig)
 
@@ -23,7 +27,9 @@ else:
     top_countries = df["country"].value_counts().head(10).index.tolist()
     box_df = df[df["country"].isin(top_countries)]
     fig2, ax2 = plt.subplots(figsize=(10, 6))
-    data = [box_df.loc[box_df["country"] == c, "engagement_per_view"].dropna() for c in top_countries]
+    data = [
+        box_df.loc[box_df["country"] == c, "engagement_per_view"].dropna() for c in top_countries
+    ]
     ax2.boxplot(data, labels=[str(c) for c in top_countries], vert=True, showfliers=False)
     ax2.set_ylabel("Engagement per View")
     st.pyplot(fig2)

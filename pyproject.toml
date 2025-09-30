@@ -1,0 +1,19 @@
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+combine_as_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# E,F = pycodestyle/pyflakes; I = import order; B = bugbear; UP = pyupgrade
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
