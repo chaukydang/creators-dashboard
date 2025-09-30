@@ -1,0 +1,13 @@
+scoring:
+  epv_weight: 0.6         # trọng số EPV trong KOL Score
+  ep1k_weight: 0.4        # trọng số EP1k
+  min_followers: 0        # ngưỡng lọc tối thiểu
+
+simulation_defaults:
+  cpv: 0.02               # cost per view (USD) mặc định
+  budget: 5000            # ngân sách tổng (USD)
+  view_to_reach_ratio: 0.85  # % view ~ reach (giả định)
+
+similarity:
+  features: ["engagement_per_view", "engagement_per_1k_followers", "followers"]
+  k: 10
