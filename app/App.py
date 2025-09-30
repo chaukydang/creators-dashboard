@@ -1,21 +1,29 @@
-# app/App.py
-# bootstrap trước
+# --- bootstrap: make sure Python sees the repo root ---
 import os
 import sys
 
 import streamlit as st
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))  # repo root
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
+# ------------------------------------------------------
 
-# rồi import
+# Prefer app.utils; if missing attributes, fallback to top-level utils
 try:
-    from app import utils as U
-except ModuleNotFoundError:
-    import utils as U
+    from app import utils as U  # noqa: E402
+except ModuleNotFoundError:  # noqa: E402
+    import utils as U  # noqa: E402
+
+# Guard: if critical functions not found in app.utils, fallback to root utils
+if not all(hasattr(U, name) for name in ("load_data", "kpi_fmt", "number_fmt")):
+    try:
+        import utils as U  # noqa: E402
+    except Exception:
+        pass
 
 st.set_page_config(page_title="KOL Performance Dashboard", page_icon="📊", layout="wide")
+
 st.title("📊 KOL Performance Tracking Dashboard")
 st.caption("Use the sidebar to navigate pages.")
 
