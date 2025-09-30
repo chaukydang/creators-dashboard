@@ -1,7 +1,8 @@
 # app/pages/2_Leaderboard.py
 import pandas as pd
 import streamlit as st
-from utils import load_data
+
+from app.utils import load_data
 
 st.title("Leaderboard")
 df = load_data()

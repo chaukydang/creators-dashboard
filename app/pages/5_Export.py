@@ -1,6 +1,7 @@
 # app/pages/5_Export.py
 import streamlit as st
-from utils import load_data
+
+from app.utils import load_data
 
 st.title("Export")
 df = load_data()
