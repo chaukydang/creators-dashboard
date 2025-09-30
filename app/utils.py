@@ -7,6 +7,43 @@ import streamlit as st
 import yaml
 
 
+# ---- number/kpi format helpers ----
+def kpi_fmt(x, digits: int = 4) -> str:
+    """Format KPI number with fixed decimals; handle None/NaN gracefully."""
+    try:
+        import math
+
+        if x is None or (isinstance(x, float) and math.isnan(x)):
+            return "—"
+        return f"{float(x):,.{digits}f}"
+    except Exception:
+        return "—"
+
+
+def number_fmt(x) -> str:
+    """Format integer-like values with thousand separators; handle None/NaN."""
+    try:
+        import math
+
+        if x is None or (isinstance(x, float) and math.isnan(x)):
+            return "—"
+        return f"{float(x):,.0f}"
+    except Exception:
+        return "—"
+
+
+def pct_fmt(x, digits: int = 2) -> str:
+    """Format percentage (0.123 -> 12.30%)."""
+    try:
+        import math
+
+        if x is None or (isinstance(x, float) and math.isnan(x)):
+            return "—"
+        return f"{100 * float(x):,.{digits}f}%"
+    except Exception:
+        return "—"
+
+
 # ---- đọc config.yaml (cache) ----
 @st.cache_data(show_spinner=False)
 def load_config(path: str = "app/config.yaml") -> dict:
