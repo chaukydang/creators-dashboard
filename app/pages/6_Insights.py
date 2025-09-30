@@ -4,11 +4,14 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from app.utils import kpi_fmt, load_data, number_fmt
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
 
 st.title("Insights (Auto)")
 
-df = load_data()
+df = U.load_data()
 
 # ----- 0) Guard: cột cần thiết
 need = {"followers", "engagement_per_view", "engagement_per_1k_followers", "kol_score"}
@@ -28,15 +31,15 @@ reach_top20p = df_sorted_f.head(top20p)["followers"].fillna(0).sum()
 
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
-    st.metric("KOLs", number_fmt(N))
+    st.metric("KOLs", U.number_fmt(N))
 with c2:
-    st.metric("Top 10% giữ % Reach", kpi_fmt(100 * reach_top10p / max(reach_total, 1e-9), 2))
+    st.metric("Top 10% giữ % Reach", U.kpi_fmt(100 * reach_top10p / max(reach_total, 1e-9), 2))
 with c3:
-    st.metric("Top 20% giữ % Reach", kpi_fmt(100 * reach_top20p / max(reach_total, 1e-9), 2))
+    st.metric("Top 20% giữ % Reach", U.kpi_fmt(100 * reach_top20p / max(reach_total, 1e-9), 2))
 with c4:
-    st.metric("Median EPV", kpi_fmt(df["engagement_per_view"].median()))
+    st.metric("Median EPV", U.kpi_fmt(df["engagement_per_view"].median()))
 with c5:
-    st.metric("Median EP1k", kpi_fmt(df["engagement_per_1k_followers"].median()))
+    st.metric("Median EP1k", U.kpi_fmt(df["engagement_per_1k_followers"].median()))
 
 st.caption(
     "Insight: nếu >70% tổng follower nằm ở top 10–20% KOL → thị trường rất tập trung; chiến lược cần phối hợp Macro/Mega cho awareness + Micro/Mid cho performance."

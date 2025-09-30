@@ -2,10 +2,14 @@
 import pandas as pd
 import streamlit as st
 
-from app.utils import load_data
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
+
 
 st.title("Leaderboard")
-df = load_data()
+df = U.load_data()
 
 with st.sidebar:
     st.header("Filters")

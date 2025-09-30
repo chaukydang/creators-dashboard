@@ -4,10 +4,13 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from app.utils import load_data
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
 
 st.title("Anomalies & Quality Checks")
-df = load_data()
+df = U.load_data()
 st.caption("Heuristics: Like/View, Comment/View, Share/View — phát hiện outliers (IQR).")
 
 

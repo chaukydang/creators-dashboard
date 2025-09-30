@@ -3,13 +3,16 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from app.utils import load_config, load_data
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
 
 st.set_page_config(page_title="Forecast & Simulation", page_icon="📈", layout="wide")
 st.title("📈 Forecast & 🎲 Simulation")
 
-df = load_data()
-cfg = load_config()
+df = U.load_data()
+cfg = U.load_config()
 sim_cfg = cfg.get("simulation_defaults", {})
 
 # ---------- Forecast (growth toy model) ----------

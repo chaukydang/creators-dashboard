@@ -4,10 +4,13 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from app.utils import kpi_fmt, load_data, number_fmt
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
 
 st.title("Overview")
-df = load_data()
+df = U.load_data()
 
 with st.sidebar:
     st.header("Filters")
@@ -31,15 +34,15 @@ dff = df[mask]
 
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
-    st.metric("KOLs in view", number_fmt(len(dff)))
+    st.metric("KOLs in view", U.number_fmt(len(dff)))
 with c2:
-    st.metric("Avg EPV", kpi_fmt(dff["engagement_per_view"].mean()))
+    st.metric("Avg EPV", U.kpi_fmt(dff["engagement_per_view"].mean()))
 with c3:
-    st.metric("Median EPV", kpi_fmt(dff["engagement_per_view"].median()))
+    st.metric("Median EPV", U.kpi_fmt(dff["engagement_per_view"].median()))
 with c4:
-    st.metric("Avg EP1k", kpi_fmt(dff["engagement_per_1k_followers"].mean()))
+    st.metric("Avg EP1k", U.kpi_fmt(dff["engagement_per_1k_followers"].mean()))
 with c5:
-    st.metric("Avg KOL Score", kpi_fmt(dff["kol_score"].mean()))
+    st.metric("Avg KOL Score", U.kpi_fmt(dff["kol_score"].mean()))
 
 dff_sorted = dff.sort_values("followers", ascending=False)
 cum = dff_sorted["followers"].fillna(0).cumsum()
