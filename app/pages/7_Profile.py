@@ -1,12 +1,15 @@
 import pandas as pd
 import streamlit as st
 
-from app.utils import load_config, load_data, top_similar
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
 
 st.set_page_config(page_title="KOL Profile", page_icon="👤", layout="wide")
 
-df = load_data()
-cfg = load_config()
+df = U.load_data()
+cfg = U.load_config()
 features = cfg.get("similarity", {}).get(
     "features", ["engagement_per_view", "engagement_per_1k_followers", "followers"]
 )
@@ -60,7 +63,7 @@ with col2:
 
 st.divider()
 st.subheader("🔎 Similar creators")
-sim = top_similar(df, idx=idx, features=features, k=k)
+sim = U.top_similar(df, idx=idx, features=features, k=k)
 keep_cols = [
     name_col,
     "followers",

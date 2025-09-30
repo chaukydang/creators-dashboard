@@ -2,10 +2,14 @@
 import matplotlib.pyplot as plt
 import streamlit as st
 
-from app.utils import load_data
+try:
+    from app import utils as U
+except ImportError:
+    import utils as U
+
 
 st.title("Country & Segments")
-df = load_data()
+df = U.load_data()
 
 if "country" not in df.columns or df["country"].isna().all():
     st.warning("Dataset không có cột country.")
