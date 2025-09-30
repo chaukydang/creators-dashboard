@@ -110,6 +110,24 @@ matplotlib
 
 ---
 
+## 📑 Data Dictionary (kol_clean.csv)
+
+| Column                       | Type    | Description                                                   |
+|-----------------------------|---------|---------------------------------------------------------------|
+| account                     | str     | Tên tài khoản / channel                                      |
+| country                     | str     | Quốc gia (nếu có)                                            |
+| followers                   | int     | Số follower                                                   |
+| views_avg                   | float   | Lượt xem trung bình/clip                                     |
+| likes_avg                   | float   | Lượt like trung bình/clip                                    |
+| comments_avg                | float   | Lượt comment trung bình/clip                                 |
+| shares_avg                  | float   | Lượt share trung bình/clip                                   |
+| engagement_per_view (EPV)   | float   | (likes+comments+shares)/views_avg                             |
+| engagement_per_1k_followers | float   | (likes+comments+shares)/(followers/1000)                      |
+| kol_score                   | float   | Điểm tổng hợp 0..1 (theo config.yaml, robust scaled)          |
+| follower_tier               | str     | Tier phân theo followers (Micro/Medium/Macro/Mega)           |
+
+> Công thức & trọng số có thể chỉnh trong `app/config.yaml`.
+
 ## 🛠️ Troubleshooting
 
 - **`FileNotFoundError: kol_clean.csv`**  
@@ -123,6 +141,18 @@ matplotlib
 
 - **Cảnh báo Deprecation**  
   - Repo này đã cập nhật: dùng `np.trapezoid`, `observed=False` trong `groupby`, `tick_labels` với `boxplot`.
+
+- **ModuleNotFoundError: app**  
+  Đảm bảo ở đầu `app/App.py` và mỗi `app/pages/*.py` có bootstrap:
+  ```python
+  import os, sys
+  ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+  if ROOT not in sys.path:
+      sys.path.insert(0, ROOT)
+  try:
+      from app import utils as U  # noqa: E402
+  except ModuleNotFoundError:
+      import utils as U           # noqa: E402
 
 ---
 
