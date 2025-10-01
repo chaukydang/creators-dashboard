@@ -34,72 +34,6 @@ data/
 └─ tiktok_top_1000.csv    # Dữ liệu raw (không bắt buộc commit)
 ```
 
-> Bạn có thể **commit `out/kol_clean.csv`** để app chạy ngay, hoặc dùng **uploader** trong app để upload CSV khi chạy lần đầu.
-
----
-
-## ⚙️ Cài đặt & chạy local
-
-Yêu cầu: **Python 3.9+**. Khuyến nghị virtualenv.
-
-```bash
-git clone https://github.com/<your-username>/creators-dashboard.git
-cd creators-dashboard/app
-
-# tạo & kích hoạt venv
-python -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
-
-# cài thư viện
-pip install -r requirements.txt
-
-# chạy app
-streamlit run App.py
-```
-
-Mở trình duyệt: http://localhost:8501
-
----
-
-## 🧹 Làm sạch dữ liệu (tùy chọn)
-
-Nếu bạn có file raw `data/tiktok_top_1000.csv`, tạo file clean:
-
-```bash
-cd scripts
-python kol_cleaner.py
-```
-
-File clean sẽ được tạo ở `out/kol_clean.csv`.
-
----
-
-## ☁️ Deploy lên Streamlit Cloud
-
-1. Push repo lên GitHub (đảm bảo có `app/` và `app/requirements.txt`).  
-2. Truy cập https://share.streamlit.io → **New app**.  
-3. Chọn repo: `<your-username>/creators-dashboard`.  
-4. Branch: `main`.  
-5. **Main file path**: `app/App.py`.  
-6. Bấm **Deploy** 🎉
-
-**Lưu ý:**
-- Nếu **commit `out/kol_clean.csv`**, app chạy ngay.
-- Nếu **không commit CSV**, lần đầu mở app sẽ có **file uploader** → upload `kol_clean.csv` rồi ấn **Rerun**.
-
----
-
-## 📦 Requirements
-
-```txt
-streamlit==1.38.0
-pandas
-numpy
-matplotlib
-```
-
-> Nếu thêm thư viện mới, cập nhật file `app/requirements.txt` rồi `git push` để Cloud tự rebuild.
-
 ---
 
 ## 🧠 Gợi ý sử dụng
@@ -125,35 +59,6 @@ matplotlib
 | engagement_per_1k_followers | float   | (likes+comments+shares)/(followers/1000)                      |
 | kol_score                   | float   | Điểm tổng hợp 0..1 (theo config.yaml, robust scaled)          |
 | follower_tier               | str     | Tier phân theo followers (Micro/Medium/Macro/Mega)           |
-
-> Công thức & trọng số có thể chỉnh trong `app/config.yaml`.
-
-## 🛠️ Troubleshooting
-
-- **`FileNotFoundError: kol_clean.csv`**  
-  - Commit `out/kol_clean.csv` vào repo **hoặc** dùng uploader trong app để upload CSV khi chạy.
-
-- **Thiếu thư viện / `ModuleNotFoundError`**  
-  - Thêm tên gói vào `app/requirements.txt`, commit & push lại.
-
-- **CSV > 50MB**  
-  - Dùng **Git LFS** (`git lfs install && git lfs track "*.csv"`) **hoặc** lưu CSV ngoài (GDrive/S3/URL) và sửa `utils.py` để đọc từ URL.
-
-- **Cảnh báo Deprecation**  
-  - Repo này đã cập nhật: dùng `np.trapezoid`, `observed=False` trong `groupby`, `tick_labels` với `boxplot`.
-
-- **ModuleNotFoundError: app**  
-  Đảm bảo ở đầu `app/App.py` và mỗi `app/pages/*.py` có bootstrap:
-  ```python
-  import os, sys
-  ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-  if ROOT not in sys.path:
-      sys.path.insert(0, ROOT)
-  try:
-      from app import utils as U  # noqa: E402
-  except ModuleNotFoundError:
-      import utils as U           # noqa: E402
-
 ---
 
 ## 🔒 Secrets (tuỳ chọn)
