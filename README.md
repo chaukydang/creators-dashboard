@@ -1,4 +1,4 @@
-# 📊 KOL Performance Tracking Dashboard
+# KOL Performance Tracking Dashboard
 
 Dashboard đa trang (multi-page) xây dựng bằng **Streamlit** để phân tích & theo dõi hiệu suất KOL/TikTok Creators.
 
@@ -61,15 +61,6 @@ data/
 | follower_tier               | str     | Tier phân theo followers (Micro/Medium/Macro/Mega)           |
 ---
 
-## 🔒 Secrets (tuỳ chọn)
-
-Nếu cần đọc dữ liệu từ Google Sheets/DB, đặt thông tin trong **Secrets** của Streamlit Cloud (Manage app → Settings → Secrets). Trong code, truy cập bằng `st.secrets["KEY"]`.
-
----
-
-## 📜 License
-
-Thêm `LICENSE` nếu bạn muốn chia sẻ public/open-source.
 
 ---
 
