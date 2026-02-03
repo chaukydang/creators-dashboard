@@ -1,6 +1,9 @@
 # KOL Performance Tracking Dashboard
 
+Link dashboard: https://creators-dashboard.streamlit.app/ 
+
 Dashboard đa trang (multi-page) xây dựng bằng **Streamlit** để phân tích & theo dõi hiệu suất KOL/TikTok Creators.
+
 
 ## 🚀 Tính năng
 - **Overview:** KPI, phân phối EPV/EP1k, **Pareto reach** (tập trung reach).
